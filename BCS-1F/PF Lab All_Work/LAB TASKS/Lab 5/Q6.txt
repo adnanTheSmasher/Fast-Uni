@@ -1,0 +1,10 @@
+#include <stdio.h>
+int main()
+{
+    int x;
+    x = 5 > 8 ? 10 : 1 != 2 < 5 ? 20 : 30;
+    printf("Value of x:%d", x);
+    return 0;
+}
+
+the ouput will be 30 due o order of precedence as first it will check that 5 > 8 that is false than it will go on else part and intead of checking 1!=2 it will check 2 < 5 as "<" sign has higher predence than "!=" so the it will return true meaning it will return 1 and "1!=1" is False so anser will be 30; 

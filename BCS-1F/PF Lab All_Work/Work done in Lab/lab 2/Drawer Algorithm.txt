@@ -1,0 +1,27 @@
+1)start
+2)DrawerSize = 5
+3)sockedSetteld = 0
+4)Empty All Drawers
+5)pick a sock to compare
+6)pick another random sock
+7)if pickedSockedSize < RandomSockSize
+	pick another random sock
+8)  else
+	change the comparing sock
+9) repeat from step 7 until all 4 socks is compared then put smallest sock in first empty drawer
+sockedSettled = +1
+if sockedSettled == DrawerSize:
+	END
+else:
+	repeat Step 9
+
+
+
+
+
+
+
+
+
+
+

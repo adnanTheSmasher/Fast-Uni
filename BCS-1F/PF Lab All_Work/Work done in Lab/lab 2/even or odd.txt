@@ -1,0 +1,15 @@
+START
+Input num1
+Input num2
+Set sum to 0 
+Set multiply to 0
+Set sum to num1 + num2
+Set multiply to sum * num2
+if multiply > 0:
+	print 'negative'
+else :
+	print 'Positive'
+if multiply%2 == 0:
+	print 'Even'
+else:
+	print 'odd'
