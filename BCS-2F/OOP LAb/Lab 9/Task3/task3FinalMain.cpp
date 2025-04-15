@@ -1,3 +1,7 @@
+//compile and run in powershell: g++ "task3FinalMain.cpp" "task3Header.cpp" -o task3.exe
+
+
+
 #include "task3Header.h"
 #include <iostream>
 using namespace std;
