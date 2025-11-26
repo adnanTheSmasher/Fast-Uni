@@ -47,6 +47,9 @@
     <MASM Include="gameManager_checkCollision.asm">
       <Filter>Source Files</Filter>
     </MASM>
+    <MASM Include="gameManager_FlappyPower.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="freeze.h">

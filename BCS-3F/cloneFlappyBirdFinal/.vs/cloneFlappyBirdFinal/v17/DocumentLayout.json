@@ -5,10 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{7E1155E2-68A3-405F-AF45-C4869A8C3F68}|cloneFlappyBirdFinal\\cloneFlappyBirdFinal.vcxproj|D:\\Adnan\\FAST UNIVERSITY\\Semester 3\\COAL Lab\\Coal Lab Project\\cloneFlappyBirdFinal\\cloneFlappyBirdFinal\\main1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{7E1155E2-68A3-405F-AF45-C4869A8C3F68}|cloneFlappyBirdFinal\\cloneFlappyBirdFinal.vcxproj|solutionrelative:cloneFlappyBirdFinal\\main1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E1155E2-68A3-405F-AF45-C4869A8C3F68}|cloneFlappyBirdFinal\\cloneFlappyBirdFinal.vcxproj|D:\\Adnan\\FAST UNIVERSITY\\Semester 3\\COAL Lab\\Coal Lab Project\\cloneFlappyBirdFinal\\cloneFlappyBirdFinal\\gameManager_SoundController.asm||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{7E1155E2-68A3-405F-AF45-C4869A8C3F68}|cloneFlappyBirdFinal\\cloneFlappyBirdFinal.vcxproj|solutionrelative:cloneFlappyBirdFinal\\gameManager_SoundController.asm||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -28,7 +24,7 @@
               "RelativeDocumentMoniker": "cloneFlappyBirdFinal\\main1.cpp",
               "ToolTip": "D:\\Adnan\\FAST UNIVERSITY\\Semester 3\\COAL Lab\\Coal Lab Project\\cloneFlappyBirdFinal\\cloneFlappyBirdFinal\\main1.cpp",
               "RelativeToolTip": "cloneFlappyBirdFinal\\main1.cpp",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAnwDkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAKkBAAAAAAAAAAAAALsBAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-10-02T16:56:15.763Z",
               "IsPinned": true,
@@ -37,18 +33,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "gameManager_SoundController.asm",
-              "DocumentMoniker": "D:\\Adnan\\FAST UNIVERSITY\\Semester 3\\COAL Lab\\Coal Lab Project\\cloneFlappyBirdFinal\\cloneFlappyBirdFinal\\gameManager_SoundController.asm",
-              "RelativeDocumentMoniker": "cloneFlappyBirdFinal\\gameManager_SoundController.asm",
-              "ToolTip": "D:\\Adnan\\FAST UNIVERSITY\\Semester 3\\COAL Lab\\Coal Lab Project\\cloneFlappyBirdFinal\\cloneFlappyBirdFinal\\gameManager_SoundController.asm",
-              "RelativeToolTip": "cloneFlappyBirdFinal\\gameManager_SoundController.asm",
-              "ViewState": "AgIAACkAAAAAAAAAAAAAADgAAAAHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-11-23T11:34:30.562Z"
             }
           ]
         }

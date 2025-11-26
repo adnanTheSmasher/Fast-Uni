@@ -9,9 +9,6 @@ PUBLIC gameManager_stopMenuMusic
 PUBLIC gameManager_playFlapSound
 PUBLIC gameManager_playScoreSound
 
-; ----------------------------
-; Prototype for PlaySoundA
-; ----------------------------
 PlaySoundA PROTO :PTR BYTE, :DWORD, :DWORD
 includelib winmm.lib
 

@@ -9,12 +9,13 @@ PUBLIC gameManager_checkCollision
 ; birdX, birdY, birdW, birdH, pipeX, pipeTopY, pipeBottomY, pipeW
 gameManager_checkCollision PROC birdX:DWORD, birdY:DWORD, birdW:DWORD, birdH:DWORD,
                                 pipeX:DWORD, pipeTopY:DWORD, pipeBottomY:DWORD, pipeW:DWORD
-    ; ---- Compute bird edges ----
+
+    ; ---- bird ke edges ----
     mov eax, birdX
     add eax, birdW      ; EAX = birdRight
     mov ebx, birdX      ; EBX = birdLeft
 
-    ; ---- Compute pipe edges ----
+    ; ---- pipe ke edges ----
     mov ecx, pipeX
     add ecx, pipeW      ; ECX = pipeRight
 

@@ -142,6 +142,9 @@
     <MASM Include="gameManager_checkCollision.asm">
       <IncludePaths Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">c:\irvine</IncludePaths>
     </MASM>
+    <MASM Include="gameManager_FlappyPower.asm">
+      <IncludePaths Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">c:\irvine</IncludePaths>
+    </MASM>
     <MASM Include="gameManager_getRandom.asm">
       <IncludePaths Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">c:\irvine</IncludePaths>
     </MASM>

@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <mmsystem.h>
+#include <deque>
 #include "freeze.h"
 
 using namespace std;
@@ -13,7 +14,8 @@ using namespace std;
 extern "C" int  __cdecl gameManager_stateChanger(int currentState, int command);
 extern "C" void __stdcall gameManager_writeToFile(const char* buffer, int length);
 extern "C" void __stdcall gameManager_writeScore(const char* buffer, int length, int score);
-extern "C" int  __cdecl gameManager_getRandom(int maxValue);
+extern "C" int __stdcall gameManager_getRandom(int maxValue);
+extern "C" void __stdcall gameManager_randomize();
 extern "C" int  __stdcall gameManager_updateScores();
 extern "C" int  __stdcall gameManager_getScores();
 extern "C" void __stdcall gameManager_resetScores();
@@ -27,9 +29,18 @@ extern "C" int __stdcall gameManager_checkCollision(
 );
 extern "C" void __stdcall gameManager_playFlapSound();
 extern "C" void __stdcall gameManager_playScoreSound();
+extern "C" float __stdcall gameManager_birdPhysics(float velocity, float angle, float gravity, float flapPower, int isFlap);
+
 
 // ======================== GAME STATES ========================
-enum GameStates { MENU = 0, GAMEPLAY = 1, HIGHSCORE = 2, CREDITS = 3, EXIT = 4, GAMEOVER = 5 };
+enum GameStates { 
+    MENU = 0, 
+    GAMEPLAY = 1, 
+    HIGHSCORE = 2,
+    CREDITS = 3, 
+    EXIT = 4, 
+    GAMEOVER = 5 
+};
 
 // ======================== PIPE STRUCT ========================
 struct Pipe {
@@ -41,6 +52,9 @@ struct Pipe {
 };
 
 int main() {
+    gameManager_randomize();
+
+
     // ======================== WINDOW SETUP ========================
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(desktop, "Flappy Bird ASM - Highscore", sf::Style::Close | sf::Style::Titlebar);
@@ -58,8 +72,8 @@ int main() {
 
     // ======================== LOAD TEXTURES ========================
     sf::Texture birdTex, pipeTex;
-    if (!birdTex.loadFromFile("assets/images/bird1.png") ||
-        !pipeTex.loadFromFile("assets/images/pipe.png")) {
+    if (!birdTex.loadFromFile("assets/images/murtaza.png") ||
+        !pipeTex.loadFromFile("assets/images/hammad3.jpg")) {
         cerr << "Cannot load textures\n";
         return -1;
     }
@@ -89,7 +103,7 @@ int main() {
     sf::Text playText("PLAY", font, 28), highScoreText("HIGHSCORE", font, 28),
         creditsText("CREDITS", font, 28), exitText("EXIT", font, 28);
 
-    auto centerText = [](sf::Text& t, sf::RectangleShape& b) {
+    auto centerText = [](sf::Text& t, sf::RectangleShape& b) {   // Buttin k text ko center mai karega
         sf::FloatRect tb = t.getLocalBounds();
         t.setOrigin(tb.left + tb.width / 2.f, tb.top + tb.height / 2.f);
         t.setPosition(b.getPosition().x + b.getSize().x / 2.f,
@@ -101,7 +115,7 @@ int main() {
     centerText(creditsText, creditsButton);
     centerText(exitText, exitButton);
 
-    sf::Text title("FLAPPY ASM MENU", font, 40);
+    sf::Text title("FLAPPY BIRD", font, 40);
     sf::FloatRect tb = title.getLocalBounds();
     title.setOrigin(tb.left + tb.width / 2.f, tb.top + tb.height / 2.f);
     title.setPosition(windowSize.x / 2.f, startY - 80.f);
@@ -109,28 +123,28 @@ int main() {
     // ======================== BIRD SETUP (origin centered for rotation) ========================
     sf::Sprite bird(birdTex);
 
-    // Set scale first, then set origin to local center
+	// windows k size k mutabiq bird k scale set karna
     float birdScale = windowSize.y / 400.f;
     bird.setScale(birdScale, birdScale);
 
-    // use local bounds to compute center origin (unscaled), set origin to center
+    // ye bus centering k leye hai
     sf::FloatRect local = bird.getLocalBounds();
     bird.setOrigin(local.left + local.width / 2.f, local.top + local.height / 2.f);
 
-    // Now position bird with center coordinates (we want the bird at x = windowSize.x/4, y = center)
+    // bird k position set horahi hai
     bird.setPosition(windowSize.x / 4.f, windowSize.y / 2.f);
 
-    float birdVelocity = 0.f;
-    const float gravity = 0.5f;
-    const float flapPower = -10.f;
+	float birdVelocity = 0.f; // bird ki initial velocity
+    const float gravity = 0.5f; // 
+	const float flapPower = -10.f; // maine changes ki hai flap power mai
 
-    // rotation variables: angle in degrees; tilt up on flap, tilt down gradually when falling
-    float birdAngle = 0.f;                // current displayed rotation angle
-    const float flapTilt = -25.f;         // immediate tilt when flapping (degrees)
-    const float maxDownTilt = 80.f;       // max downward tilt
-    const float tiltSpeed = 2.5f;         // degrees per frame when settling downward
+    // bird k rotation
+    float birdAngle = 0.f;                // current angle
+    const float flapTilt = -25.f;         // tilt hoga bird
+    const float maxDownTilt = 80.f;      
+    const float tiltSpeed = 2.5f; 
 
-    vector<Pipe> pipes;
+    deque<Pipe> pipes;
     const float pipeGap = windowSize.y / 4.f;
     const float pipeSpacing = windowSize.x / 2.f;
     const float pipeSpeed = 6.f;
@@ -156,10 +170,9 @@ int main() {
 
             if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::Escape) command = 5;
-                if (currentState == GAMEPLAY && event.key.code == sf::Keyboard::Space) {
-                    birdVelocity = flapPower;
-                    // tilt the bird up immediately
-                    birdAngle = flapTilt;
+                if(currentState == GAMEPLAY && event.key.code == sf::Keyboard::Space) {
+                    birdVelocity = gameManager_birdPhysics(birdVelocity, birdAngle, gravity, flapPower, 1);
+                    birdAngle = flapTilt; 
                     gameManager_playFlapSound();
                 }
                 if (currentState == GAMEOVER && event.key.code == sf::Keyboard::Space) {
@@ -203,7 +216,7 @@ int main() {
                 gameplayStarted = true;
                 askedName = false;
                 pipes.clear();
-                // reposition bird center
+                // har frame mai bird k position set horahe hai
                 bird.setPosition(windowSize.x / 4.f, windowSize.y / 2.f);
                 birdVelocity = 0.f;
                 birdAngle = 0.f;
@@ -248,36 +261,57 @@ int main() {
                 askedName = true;
             }
 
+            float pipeScaleX = windowSize.y / 200.f;
+            float pipeWidth = pipeTex.getSize().x * pipeScaleX;
+
             // Initialize pipes if empty
             if (pipes.empty()) {
+                float currentX = (float)windowSize.x;
                 for (int i = 0; i < 5; ++i) {
                     Pipe p;
-                    p.x = (float)windowSize.x + i * pipeSpacing;
+                    p.x = currentX;
                     float minY = 100.f;
                     float maxY = (float)windowSize.y - pipeGap - 100.f;
                     int range = (int)(maxY - minY);
                     if (range < 1) range = 1;
                     p.gapY = minY + gameManager_getRandom(range);
-
                     p.topPipe.setTexture(pipeTex);
                     p.bottomPipe.setTexture(pipeTex);
-                    float pipeScaleX = windowSize.y / 200.f;
                     p.topPipe.setScale(pipeScaleX, -pipeScaleX);
                     p.bottomPipe.setScale(pipeScaleX, pipeScaleX);
                     p.topPipe.setPosition(p.x, p.gapY);
                     p.bottomPipe.setPosition(p.x, p.gapY + pipeGap);
                     pipes.push_back(p);
+                    currentX += pipeSpacing;
                 }
             }
 
-            float pipeWidth = pipeTex.getSize().x * (windowSize.y / 200.f);
-
-            // Move pipes, update score
+            // Move pipes
             for (auto& p : pipes) {
                 p.x -= pipeSpeed;
                 p.topPipe.setPosition(p.x, p.gapY);
                 p.bottomPipe.setPosition(p.x, p.gapY + pipeGap);
             }
+
+            while (!pipes.empty() && pipes.front().x + pipeWidth < 0.f) {
+                pipes.pop_front();  
+                Pipe p;
+                float newX = pipes.back().x + pipeSpacing;  
+                p.x = newX;
+                float minY = 100.f;
+                float maxY = (float)windowSize.y - pipeGap - 100.f;
+                int range = (int)(maxY - minY);
+                if (range < 1) range = 1;
+                p.gapY = minY + gameManager_getRandom(range);
+                p.topPipe.setTexture(pipeTex);
+                p.bottomPipe.setTexture(pipeTex);
+                p.topPipe.setScale(pipeScaleX, -pipeScaleX);
+                p.bottomPipe.setScale(pipeScaleX, pipeScaleX);
+                p.topPipe.setPosition(p.x, p.gapY);
+                p.bottomPipe.setPosition(p.x, p.gapY + pipeGap);
+                pipes.push_back(p);
+            }
+
 
             // Now compute bird global bounds (AABB) for scoring/collision
             sf::FloatRect birdGlobal = bird.getGlobalBounds(); // left/top represent AABB left/top
@@ -315,9 +349,9 @@ int main() {
             // Apply rotation to sprite
             bird.setRotation(birdAngle);
 
-            // Collision detection using ASM (pass AABB coords)
+            // iske maat cherhna bus chalne do
             bool collision = false;
-            // Recompute bird global bounds after movement/rotation
+            
             birdGlobal = bird.getGlobalBounds();
             for (auto& p : pipes) {
                 int pipeTopY = (int)p.gapY;
@@ -334,7 +368,7 @@ int main() {
                 );
                 if (hit != 0) { collision = true; break; }
             }
-
+            // yaha tak nahi cherhna
             if (bird.getPosition().y + birdGlobal.height / 2.0f >= windowSize.y || collision) {
                 if (playerName.empty()) playerName = "Player";
                 gameManager_stopGameMusic();
@@ -374,7 +408,7 @@ int main() {
 
         // ======================== GAMEOVER ========================
         else if (currentState == GAMEOVER) {
-            sf::Text go("GAME OVER (ESC to go back)", font, 48);
+            sf::Text go("GAME OVER (Space to go back)", font, 48);
             go.setPosition(windowSize.x / 4.f, windowSize.y / 2.f - 30.f);
             window.draw(go);
 
@@ -402,8 +436,17 @@ int main() {
         // ======================== CREDITS ========================
         else if (currentState == CREDITS) {
             sf::Text cr("CREDITS SCREEN (ESC to go back)", font, 28);
-            cr.setPosition(200, 200);
+            cr.setPosition(200, 50);
+            sf::Text Adnan("Adnan Hatim | 24k-0656 | BCS-3F", font, 28);
+            Adnan.setPosition(200, 250);
+            sf::Text Turab("Turab Ali Zaidi | 24k-0651 | BCS-3F", font, 28);
+            Turab.setPosition(200, 300);
+            sf::Text Murtaza("Murtaza Hunaid Terai | 24k-0782 | BCS-3F", font, 28);
+            Murtaza.setPosition(200, 350);
             window.draw(cr);
+            window.draw(Adnan);
+            window.draw(Turab);
+            window.draw(Murtaza);
         }
 
         // ======================== EXIT ========================
