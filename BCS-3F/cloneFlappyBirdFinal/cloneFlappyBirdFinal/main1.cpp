@@ -72,8 +72,8 @@ int main() {
 
     // ======================== LOAD TEXTURES ========================
     sf::Texture birdTex, pipeTex;
-    if (!birdTex.loadFromFile("assets/images/murtaza.png") ||
-        !pipeTex.loadFromFile("assets/images/hammad3.jpg")) {
+    if (!birdTex.loadFromFile("assets/images/bird1.png") ||
+        !pipeTex.loadFromFile("assets/images/pipe.png")) {
         cerr << "Cannot load textures\n";
         return -1;
     }
