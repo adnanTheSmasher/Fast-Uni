@@ -76,7 +76,7 @@ class SimpleReflexAgent:
 
 def run_agent(agent, environment):
     for step in range(9):
-        percept = environment.get_percept(agent.pos)   # 👈 capture percept first
+        percept = environment.get_percept(agent.pos)
         action = agent.act()
 
         print(f"Step {step + 1}: Position {agent.pos} -> Percept - {percept}, Action - {action}")
